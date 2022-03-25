@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,17 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    Route::get('/karyawan', function () {
-        return view('karyawan.karyawan');
-    })->name('karyawan');
 
     Route::get('/absensi', function () {
         return view('absensi.absensi');
@@ -33,6 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan', function () {
         return view('laporan.laporan');
     })->name('laporan');
+
+    Route::resource('pegawai', PegawaiController::class);
 });
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
