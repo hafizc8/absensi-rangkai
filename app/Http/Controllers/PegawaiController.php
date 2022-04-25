@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Jabatan;
 use Illuminate\Support\Facades\Hash;
 
 class PegawaiController extends Controller
@@ -15,7 +16,7 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $user = User::get();
+        $user = User::leftJoin('jabatans', 'jabatans.id', '=', 'users.id_jabatan')->get(['users.*', 'jabatans.nama_jabatan']);
         return view('karyawan.karyawan', ['user' => $user]);
     }
 
@@ -26,7 +27,8 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view('karyawan.create');
+        $jabatan = Jabatan::get();
+        return view('karyawan.create', ['jabatan' => $jabatan]);
     }
 
     /**
@@ -42,7 +44,7 @@ class PegawaiController extends Controller
             'email' => $request->email,
             'password' => Hash::make("rangkai123"),
             'akses' => $request->akses,
-            'jabatan' => $request->jabatan
+            'id_jabatan' => $request->id_jabatan
         ]);
         
         if ($user) {
@@ -69,9 +71,13 @@ class PegawaiController extends Controller
      */
     public function edit($id)
     {
-        $data = User::where('id', $id)->first();
+        $data = User::leftJoin('jabatans', 'jabatans.id', '=', 'users.id_jabatan')
+            ->where('users.id', $id)
+            ->first(['users.*', 'jabatans.nama_jabatan']);
 
-        return view('karyawan.edit', ['data' => $data]);
+        $jabatan = Jabatan::get();
+
+        return view('karyawan.edit', ['data' => $data, 'jabatan' => $jabatan]);
     }
 
     /**
@@ -87,7 +93,7 @@ class PegawaiController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'akses' => $request->akses,
-            'jabatan' => $request->jabatan
+            'id_jabatan' => $request->id_jabatan
         ]);
 
         if ($user) {

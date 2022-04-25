@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Manajemen Karyawan - Tambah Karyawan') }}</div>
+                <div class="card-header">{{ __('Manajemen Karyawan - Edit Karyawan') }}</div>
 
                 <div class="card-body">
                     @if(session()->get('success'))
@@ -26,6 +26,28 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data['name'] }}" required autocomplete="name" autofocus>
 
                                 @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="jabatan" class="col-md-4 col-form-label text-md-end">{{ __('Jabatan') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="id_jabatan" id="id_jabatan" class="form-control @error('id_jabatan') is-invalid @enderror">
+                                    @foreach($jabatan as $v)
+                                        @if($data['id_jabatan'] == $v->id)
+                                            <option value="{{ $v->id }}" selected>{{ $v->nama_jabatan }}</option>
+                                        @else
+                                            <option value="{{ $v->id }}">{{ $v->nama_jabatan }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                @error('jabatan')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -57,20 +79,6 @@
                                 </select>
 
                                 @error('akses')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="jabatan" class="col-md-4 col-form-label text-md-end">{{ __('Jabatan') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="jabatan" type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ $data['jabatan'] }}" required autocomplete="jabatan">
-
-                                @error('jabatan')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

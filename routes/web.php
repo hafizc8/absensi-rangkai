@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,8 @@ Route::middleware('auth')->group(function () {
     })->name('laporan');
 
     Route::resource('pegawai', PegawaiController::class);
+    Route::resource('jabatan', JabatanController::class);
+    Route::resource('setting', SettingController::class);
 });
 
 require __DIR__.'/auth.php';

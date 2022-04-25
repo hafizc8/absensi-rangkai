@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettingAbsensisTable extends Migration
+class CreateJabatansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateSettingAbsensisTable extends Migration
      */
     public function up()
     {
-        Schema::create('setting_absensis', function (Blueprint $table) {
+        Schema::create('jabatans', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_jabatan');
-            $table->string('jam_masuk');
-            $table->string('jam_pulang');
-            $table->double('latitude');
-            $table->double('longitude');
-            $table->integer('jarak_toleransi');
+            $table->string('nama_jabatan');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ class CreateSettingAbsensisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('setting_absensis');
+        Schema::dropIfExists('jabatans');
     }
 }
