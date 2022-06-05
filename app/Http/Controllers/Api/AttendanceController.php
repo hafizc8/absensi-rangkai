@@ -19,9 +19,12 @@ class AttendanceController {
      */
     public function getAttendanceToday($userId) {
         $kehadiran = Kehadiran::where('id_user', $userId)->whereDate('created_at', Carbon::today())->first();
+        $user = User::where('id', $userId)->first();
+        $setting = SettingAbsensi::where('id_jabatan', $user->id_jabatan)->first();
 
         if ($kehadiran == null) {
             return response()->json([
+                'setting' => $setting,
                 'check_in' => [
                     'status' => 'NOT_YET',
                     'time' => null
@@ -34,6 +37,7 @@ class AttendanceController {
         }
 
         return response()->json([
+            'setting' => $setting,
             'check_in' => [
                 'status' => $kehadiran->status_masuk,
                 'time' => $kehadiran->jam_masuk ?? null
@@ -75,12 +79,12 @@ class AttendanceController {
             $update = [];
             if ($request->mode == 1) {
                 $update = [
-                    'jam_masuk' => Carbon::now()->format('H:i'),
+                    'jam_masuk' => Carbon::now()->format('H:i:s'),
                     'status_masuk' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk)
                 ];
             } else if ($request->mode == 2) {
                 $update = [
-                    'jam_pulang' => Carbon::now()->format('H:i'),
+                    'jam_pulang' => Carbon::now()->format('H:i:s'),
                     'status_pulang' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_pulang)
                 ];
             }
@@ -98,8 +102,8 @@ class AttendanceController {
         $create = Kehadiran::create([
             'id_user' => $request->userId,
             'id_setting' => $setting->id,
-            'jam_masuk' => $request->mode == 1 ? Carbon::now()->format('H:i') : null,
-            'jam_pulang' => $request->mode == 2 ? Carbon::now()->format('H:i') : null,
+            'jam_masuk' => $request->mode == 1 ? Carbon::now()->format('H:i:s') : null,
+            'jam_pulang' => $request->mode == 2 ? Carbon::now()->format('H:i:s') : null,
             'setting_jam_masuk' => $setting->jam_masuk,
             'setting_jam_pulang' => $setting->jam_pulang,
             'status_masuk' => $request->mode == 1 ? $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk) : 'NOT_YET',
