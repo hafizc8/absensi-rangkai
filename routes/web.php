@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('jabatan', JabatanController::class);
     Route::resource('setting', SettingController::class);
+    Route::resource('laporan', LaporanController::class);
 });
 
 require __DIR__.'/auth.php';

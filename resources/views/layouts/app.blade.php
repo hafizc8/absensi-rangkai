@@ -51,6 +51,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('setting.index') ? 'active' : ''}}" href="{{ route('setting.index') }}">Manajemen Absensi</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('laporan.index') ? 'active' : ''}}" href="{{ route('laporan.index') }}">Laporan Kehadiran</a>
+                                </li>
                             </ul>
                     @endguest
 
