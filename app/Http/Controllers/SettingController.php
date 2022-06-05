@@ -101,25 +101,18 @@ class SettingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // validasi jika setting absensi utk jabatan tsb sudah ada
-        $exists = SettingAbsensi::where('id_jabatan', $request->id_jabatan)->first();
-        if ($exists) {
-            return redirect()->route('setting.edit')->with('error', 'Jabatan yang dipilih sudah pernah diatur absensinya, silahkan pilih jabatan lain');
-        }
-
         // validasi jika jam masuk lebih dari jam pulang
         $masuk = Carbon::parse(date('Y-m-d')." ".$request->jam_masuk);
         $pulang = Carbon::parse(date('Y-m-d')." ".$request->jam_pulang);
         if ($masuk->gt($pulang)) {
-            return redirect()->route('setting.create')->with('error', 'Jam masuk tidak boleh lebih dari jam pulang.');
+            return redirect()->route('setting.edit', ['setting' => $request->id])->with('error', 'Jam masuk tidak boleh lebih dari jam pulang.');
         }
 
-        $setting = SettingAbsensi::where('id', $id)->update([
+        $setting = SettingAbsensi::where('id', $request->id)->update([
             'id_jabatan' => $request->id_jabatan,
             'jam_masuk' => $request->jam_masuk,
             'jam_pulang' => $request->jam_pulang,

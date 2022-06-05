@@ -14,14 +14,19 @@
                         </div><br />
                     @endif
 
-                    <form method="POST" action="{{ route('setting.store') }}">
+                    <form method="POST" action="{{ route('setting.update', ['setting' => $data->id]) }}">
                         @csrf
+
+                        {{ method_field('PUT') }}
+
+                        <input type="hidden" name="id" value="{{ $data->id }}">
+                        <input type="hidden" name="id_jabatan" value="{{ $data->id_jabatan }}">
 
                         <div class="row mb-3">
                             <label for="jabatan" class="col-md-4 col-form-label text-md-end">{{ __('Jabatan') }}</label>
 
                             <div class="col-md-6">
-                                <select name="id_jabatan" id="id_jabatan" class="form-control @error('id_jabatan') is-invalid @enderror">
+                                <select name="jabatan" id="id_jabatan" class="form-control @error('id_jabatan') is-invalid @enderror" disabled="disabled">
                                     @foreach($jabatan as $v)
                                         @if($data['id_jabatan'] == $v->id)
                                             <option value="{{ $v->id }}" selected>{{ $v->nama_jabatan }}</option>

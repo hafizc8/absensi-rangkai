@@ -21,8 +21,7 @@
                                 <td>Nama Jabatan</td>
                                 <td>Jam Masuk</td>
                                 <td>Jam Pulang</td>
-                                <td>Latitude</td>
-                                <td>Longitude</td>
+                                <td>Koordinat</td>
                                 <td>Jarak Toleransi</td>
                                 <td>Dibuat Tgl</td>
                                 <td>Diubah Tgl</td>
@@ -36,9 +35,8 @@
                                     <td>{{$v->nama_jabatan}}</td>
                                     <td>{{$v->jam_masuk}}</td>
                                     <td>{{$v->jam_pulang}}</td>
-                                    <td>{{$v->latitude}}</td>
-                                    <td>{{$v->longitude}}</td>
-                                    <td>{{$v->jarak_toleransi}}</td>
+                                    <td><a href="https://maps.google.com/?q=<?= $v->latitude .",". $v->longitude ?>" target="_blank">({{$v->latitude}}, {{$v->longitude}})</a></td>
+                                    <td>{{$v->jarak_toleransi}} m</td>
                                     <td>{{$v->created_at}}</td>
                                     <td>{{$v->updated_at}}</td>
                                     <td>
