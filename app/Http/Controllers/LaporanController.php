@@ -18,21 +18,42 @@ class LaporanController extends Controller
         $laporan = [];
 
         if (isset($_GET['date1'])) {
-            $laporan = Kehadiran::leftJoin('users as b', 'kehadirans.id_user', '=', 'b.id')
-                ->leftJoin('jabatans as c', 'c.id', '=', 'b.id_jabatan')
-                ->whereBetween('kehadirans.created_at', [$_GET['date1'], $_GET['date2']])
-                ->get([
-                    'kehadirans.created_at',
-                    'b.name',
-                    'c.nama_jabatan',
-                    'kehadirans.jam_masuk',
-                    'kehadirans.status_masuk',
-                    'kehadirans.jam_pulang',
-                    'kehadirans.status_pulang',
-                ]);
+            $laporan = $this->getDataLaporan($_GET['date1'], $_GET['date2']);
         }
 
-
         return view('laporan.laporan', ['laporan' => $laporan]);
+    }
+
+    /**
+     * Display laporan print only
+     */
+    public function printLaporan($date1, $date2) {
+        $laporan = $this->getDataLaporan($date1, $date2);
+
+        return view(
+            'laporan.print_laporan', 
+            [
+                'laporan' => $laporan,
+                'date1' => $date1,
+                'date2' => $date2,
+            ]
+        );
+    }
+
+    function getDataLaporan($date1, $date2) {
+        $laporan = Kehadiran::leftJoin('users as b', 'kehadirans.id_user', '=', 'b.id')
+            ->leftJoin('jabatans as c', 'c.id', '=', 'b.id_jabatan')
+            ->whereBetween('kehadirans.created_at', [$date1, $date2])
+            ->get([
+                'kehadirans.created_at',
+                'b.name',
+                'c.nama_jabatan',
+                'kehadirans.jam_masuk',
+                'kehadirans.status_masuk',
+                'kehadirans.jam_pulang',
+                'kehadirans.status_pulang',
+            ]);
+
+        return $laporan;
     }
 }

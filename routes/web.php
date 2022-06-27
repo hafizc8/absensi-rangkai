@@ -5,6 +5,7 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,22 +23,17 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     Route::get('/absensi', function () {
         return view('absensi.absensi');
     })->name('absensi');
-
-    Route::get('/laporan', function () {
-        return view('laporan.laporan');
-    })->name('laporan');
 
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('jabatan', JabatanController::class);
     Route::resource('setting', SettingController::class);
     Route::resource('laporan', LaporanController::class);
+
+    Route::get('print-laporan/{date1}/{date2}', [LaporanController::class, 'printLaporan']);
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__.'/auth.php';

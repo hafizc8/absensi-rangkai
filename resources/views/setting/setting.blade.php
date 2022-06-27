@@ -37,8 +37,8 @@
                                     <td>{{$v->jam_pulang}}</td>
                                     <td><a href="https://maps.google.com/?q=<?= $v->latitude .",". $v->longitude ?>" target="_blank">({{$v->latitude}}, {{$v->longitude}})</a></td>
                                     <td>{{$v->jarak_toleransi}} m</td>
-                                    <td>{{$v->created_at}}</td>
-                                    <td>{{$v->updated_at}}</td>
+                                    <td>{{ date('d/m/Y, H:i', strtotime($v->created_at)) }}</td>
+                                    <td>{{ date('d/m/Y, H:i', strtotime($v->updated_at)) }}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-5">

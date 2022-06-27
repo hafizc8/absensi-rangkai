@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h6>PT Rangkai Utama Berjaya</h6>
+                <hr>
+                <h3>Laporan Kehadiran</h3>
+                <b>Periode: <?= date('d F Y', strtotime($date1)) ?> sd. <?= date('d F Y', strtotime($date2)) ?></b>
+                <table class="table table-striped table-bordered mt-2">
+                    <thead>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>Nama Pegawai</td>
+                            <td>Jabatan</td>
+                            <td>Jam Masuk</td>
+                            <td>Ket.</td>
+                            <td>Jam Pulang</td>
+                            <td>Ket.</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($laporan as $v)
+                            <tr>
+                                <td>{{ date('d F Y, H:i', strtotime($v->created_at)) }}</td>
+                                <td>{{ $v->name }}</td>
+                                <td>{{ $v->nama_jabatan }}</td>
+                                <td>{{ $v->jam_masuk }}</td>
+                                <td>{{ $v->status_masuk == 'LATE' ? 'Terlambat' : 'Tepat Waktu' }}</td>
+                                <td>{{ $v->jam_pulang }}</td>
+                                <td>{{ $v->status_pulang == 'LATE' ? 'Terlambat' : 'Tepat Waktu' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+		window.load = print_d();
+		function print_d(){
+			window.print();
+		}
+	</script>
+</body>
+</html>

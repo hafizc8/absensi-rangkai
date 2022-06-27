@@ -28,7 +28,7 @@
                                 <tr>
                                     <td>{{$v->id}}</td>
                                     <td>{{$v->nama_jabatan}}</td>
-                                    <td>{{$v->created_at}}</td>
+                                    <td>{{ date('d/m/Y, H:i', strtotime($v->created_at)) }}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-3">

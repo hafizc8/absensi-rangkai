@@ -37,7 +37,9 @@
                             <div class="col-md-10">
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary" style="margin-right: 5px"><span class="fa fa-search"></span> Tampilkan</button>
-                                    <button type="submit" class="btn btn-secondary"><span class="fa fa-print"></span> Cetak</button>
+                                    @if (isset($_GET['date1']))
+                                        <a href="{{ URL::to('/print-laporan/'.$_GET['date1'].'/'.$_GET['date2']) }}" target="_blank" class="btn btn-success"><span class="fa fa-print"></span> Cetak</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

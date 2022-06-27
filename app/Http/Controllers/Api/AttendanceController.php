@@ -59,6 +59,13 @@ class AttendanceController {
         $kehadiran = Kehadiran::where('id_user', $request->userId)->whereDate('created_at', Carbon::today())->first();
         $user = User::where('id', $request->userId)->first();
         $setting = SettingAbsensi::where('id_jabatan', $user->id_jabatan)->first();
+
+        // if setting jabatan not exist
+        if ($setting == null) {
+            return response()->json([
+                'message' => 'NOT_CONFIGURED',
+            ], 200);
+        }
         
         if ($kehadiran != null) {
             // validation if mode 1 && already checkin

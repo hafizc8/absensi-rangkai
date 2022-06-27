@@ -33,7 +33,7 @@
                                     <td>{{$v->name}}</td>
                                     <td>{{$v->nama_jabatan ?? 'HRD'}}</td>
                                     <td>{{$v->email}}</td>
-                                    <td>{{$v->created_at}}</td>
+                                    <td>{{ date('d/m/Y, H:i', strtotime($v->created_at)) }}</td>
                                     <td>{{ ($v->akses == 0) ? "User Biasa" : "User HRD" }}</td>
                                     <td>
                                         <div class="row">
