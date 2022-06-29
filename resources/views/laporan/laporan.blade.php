@@ -65,9 +65,9 @@
                                         <td>{{ $v->name }}</td>
                                         <td>{{ $v->nama_jabatan }}</td>
                                         <td>{{ $v->jam_masuk }}</td>
-                                        <td>{{ $v->status_masuk == 'LATE' ? 'Terlambat' : 'Tepat Waktu' }}</td>
+                                        <td>{{ $v->status_masuk == 'NOT_YET' ? 'Belum Absen' : ($v->status_masuk == 'ONTIME' ? 'Tepat Waktu' : 'LATE') }}</td>
                                         <td>{{ $v->jam_pulang }}</td>
-                                        <td>{{ $v->status_pulang == 'LATE' ? 'Terlambat' : 'Tepat Waktu' }}</td>
+                                        <td>{{ $v->status_pulang == 'NOT_YET' ? 'Belum Absen' : ($v->status_pulang == 'EARLYTIME' ? 'Terlalu Cepat' : ($v->status_pulang == 'ONTIME' ? 'Tepat Waktu' : 'Lembur')) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

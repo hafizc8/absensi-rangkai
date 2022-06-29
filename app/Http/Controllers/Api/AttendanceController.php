@@ -87,12 +87,12 @@ class AttendanceController {
             if ($request->mode == 1) {
                 $update = [
                     'jam_masuk' => Carbon::now()->format('H:i:s'),
-                    'status_masuk' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk)
+                    'status_masuk' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk, $request->mode)
                 ];
             } else if ($request->mode == 2) {
                 $update = [
                     'jam_pulang' => Carbon::now()->format('H:i:s'),
-                    'status_pulang' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_pulang)
+                    'status_pulang' => $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_pulang, $request->mode)
                 ];
             }
 
@@ -113,8 +113,8 @@ class AttendanceController {
             'jam_pulang' => $request->mode == 2 ? Carbon::now()->format('H:i:s') : null,
             'setting_jam_masuk' => $setting->jam_masuk,
             'setting_jam_pulang' => $setting->jam_pulang,
-            'status_masuk' => $request->mode == 1 ? $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk) : 'NOT_YET',
-            'status_pulang' => $request->mode == 2 ? $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_pulang) : 'NOT_YET',
+            'status_masuk' => $request->mode == 1 ? $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_masuk, $request->mode) : 'NOT_YET',
+            'status_pulang' => $request->mode == 2 ? $this->getStatusAttendance(Carbon::now()->format('H:i'), $setting->jam_pulang, $request->mode) : 'NOT_YET',
         ]);
 
         return response()->json([
@@ -127,7 +127,7 @@ class AttendanceController {
      * @param String $userId
      */
     public function getAttendanceHistory($userId) {
-        $data = Kehadiran::where('id_user', $userId)->get();
+        $data = Kehadiran::where('id_user', $userId)->orderBy('created_at', 'DESC')->get();
 
         return response()->json([
             'message' => 'SUCCESS',
@@ -135,10 +135,29 @@ class AttendanceController {
         ], 200);
     }
 
-    function getStatusAttendance($time, $banding) {
+    /**
+     * Untuk absensi pulang:
+     * Jika absen sebelum waktu pulang, maka status nya adalah EARLYTIME/Pulang Cepat
+     * Jika absen 1 jam setelah waktu pulang, maka status nya adalah OVERTIME/Lembur
+     * Jika absen di range waktu pulang < 1 jam, maka status nya adalah ONTIME
+     */
+    function getStatusAttendance($time, $banding, $mode) {
         $time = Carbon::parse(date('Y-m-d')." ".$time);
         $banding = Carbon::parse(date('Y-m-d')." ".$banding);
 
-        return $time->gt($banding) ? "LATE" : "ONTIME";
+        if ($mode == 2) {
+            if ($banding->gt($time)) {
+                return "EARLYTIME";
+            }
+            else if ($time->diffInSeconds($banding) > 3600) {
+                return "OVERTIME";
+            }
+            else {
+                return "ONTIME";
+            }
+        } 
+        else {
+            return $time->gt($banding) ? "LATE" : "ONTIME";
+        }
     }
 }
