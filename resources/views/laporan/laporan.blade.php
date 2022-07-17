@@ -65,9 +65,9 @@
                                         <td>{{ $v->name }}</td>
                                         <td>{{ $v->nama_jabatan }}</td>
                                         <td>{{ $v->jam_masuk }}</td>
-                                        <td>{{ $v->status_masuk == 'NOT_YET' ? 'Belum Absen' : ($v->status_masuk == 'ONTIME' ? 'Tepat Waktu' : 'LATE') }}</td>
+                                        <td>{{ $v->status_masuk == 'NOT_YET' ? 'Belum Absen' : ($v->status_masuk == 'ONTIME' ? 'Tepat Waktu' : 'Terlambat') }} <small>{{ ($v->status_masuk == 'LATE' ? '('.($v->menit_masuk < 0 ? $v->menit_masuk * -1 : $v->menit_masuk).' menit)' : '') }}</small></td>
                                         <td>{{ $v->jam_pulang }}</td>
-                                        <td>{{ $v->status_pulang == 'NOT_YET' ? 'Belum Absen' : ($v->status_pulang == 'EARLYTIME' ? 'Terlalu Cepat' : ($v->status_pulang == 'ONTIME' ? 'Tepat Waktu' : 'Lembur')) }}</td>
+                                        <td>{{ $v->status_pulang == 'NOT_YET' ? 'Belum Absen' : ($v->status_pulang == 'EARLYTIME' ? 'Terlalu Cepat' : ($v->status_pulang == 'ONTIME' ? 'Tepat Waktu' : 'Lembur')) }} <small>{{ ($v->status_pulang == 'LATE' ? '('.($v->menit_pulang < 0 ? $v->menit_pulang * -1 : $v->menit_pulang).' menit)' : '') }}</small></td>
                                     </tr>
                                 @endforeach
                             </tbody>

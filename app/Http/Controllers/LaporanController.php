@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Kehadiran;
+use DB;
 
 class LaporanController extends Controller
 {
@@ -52,6 +53,8 @@ class LaporanController extends Controller
                 'kehadirans.status_masuk',
                 'kehadirans.jam_pulang',
                 'kehadirans.status_pulang',
+                DB::raw('(TIME_TO_SEC(kehadirans.setting_jam_masuk) - TIME_TO_SEC(kehadirans.jam_masuk)) as menit_masuk'),
+                DB::raw('(TIME_TO_SEC(kehadirans.setting_jam_pulang) - TIME_TO_SEC(kehadirans.jam_pulang)) as menit_pulang'),
             ]);
 
         return $laporan;
