@@ -120,6 +120,23 @@ class HomeController extends Controller
             $isIncreaseWeek = true;
         }
 
+        // grafik kinerja pegawai berdasarkan kehadiran
+        $grafikKinerja = Kehadiran::
+            join('users as b', 'kehadirans.id_user', '=', 'b.id')
+            ->groupBy('kehadirans.id_user', 'b.name')
+            ->orderBy(DB::raw('SUM(TIME_TO_SEC(kehadirans.setting_jam_masuk) - TIME_TO_SEC(kehadirans.jam_masuk))'), 'DESC')
+            ->get([
+                DB::raw('SUM(TIME_TO_SEC(kehadirans.setting_jam_masuk) - TIME_TO_SEC(kehadirans.jam_masuk)) as menit'),
+                'b.name',
+                'kehadirans.id_user',
+            ]);
+
+        $grafik = [];
+        foreach ($grafikKinerja as $k => $v) {
+            $grafik['label'][] = $v['name'];
+            $grafik['data'][] = (int)$v['menit'];
+        }
+
         return view('dashboard', [
             'countUser' => $countUser,
             'countHadir' => $countHadir,
@@ -143,6 +160,8 @@ class HomeController extends Controller
             'weekEndDate' => $weekEndDate,
             'lastWeekStartDate' => $lastWeekStartDate,
             'lastWeekEndDate' => $lastWeekEndDate,
+
+            'grafik' => json_encode($grafik),
         ]);
     }
 }
