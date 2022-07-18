@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('laporan', LaporanController::class);
 
     Route::get('print-laporan/{date1}/{date2}', [LaporanController::class, 'printLaporan']);
+    Route::get('print-laporan-per-pegawai/{date1}/{date2}/{karyawan}', [LaporanController::class, 'printLaporanPerPegawai']);
+    Route::get('/laporan-per-pegawai', [LaporanController::class, 'perPegawai'])->name('laporan-per-pegawai');
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 });
 

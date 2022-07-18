@@ -54,6 +54,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('laporan.index') ? 'active' : ''}}" href="{{ route('laporan.index') }}">Laporan Kehadiran</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('laporan-per-pegawai') ? 'active' : ''}}" href="{{ route('laporan-per-pegawai') }}">Laporan Kehadiran Per Pegawai</a>
+                                </li>
                             </ul>
                     @endguest
 
